@@ -64,7 +64,7 @@ def get_mean_std(data):
         t = data[column]
         if t.dtype == 'object':
             continue
-        mean_std(column) = (t.mean(), t.std())
+        mean_std[column] = (t.mean(), t.std())
 
     return mean_std
 
@@ -79,7 +79,7 @@ def get_min_max(data, mean_std):
             continue
         values = t[t > (mean + std*alpha)] = mean + std*alpha
         values = t[t < (mean + std*alpha)] = mean - std*alpha
-        min_max(column) = (values.min(), values.max())
+        min_max[column] = (values.min(), values.max())
     
     return min_max
 
