@@ -117,7 +117,6 @@ def main():
 	obj_columns, obj_replace_rule = get_obj_columns(data)
 
 	frame = pd.DataFrame()
-	frame_res = pd.DataFrame()
 	for column in data.columns:
 		if column in no_means_columns:
 			continue
@@ -132,12 +131,9 @@ def main():
 
 	frame['Y'] = data_bak.iloc[:, -1:]
 
-	for i in frame.index:
-		if i in no_means_rows:
-			continue
-		frame_res.append(frame.iloc[i])
+	frame = frame.drop(no_means_rows)
 
-	return frame_res
+	return frame
 
 
 
