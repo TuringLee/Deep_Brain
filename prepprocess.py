@@ -37,7 +37,7 @@ def get_no_means_rows(data, mean_std):
                 row_abnormal_count[ind] += 1
 
         abnormal_value_bound = len(data.columns) * 0.1
-         for k in row_abnormal_count:
+        for k in row_abnormal_count:
             if row_abnormal_count[k] > abnormal_value_bound and k not in no_means_rows:
                 no_means_rows.append(IDs[k])
 
