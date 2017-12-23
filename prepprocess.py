@@ -109,7 +109,7 @@ def main():
 
     data = pd.read_excel(arg.input_file)
     data_bak = data
-    data = data.iloc(:, :-1)
+    data = data.iloc[:, :-1]
     mean_std = get_mean_std(data)
     min_max = get_min_max(data, mean_std)
     no_means_columns = get_no_means_columns(data)
