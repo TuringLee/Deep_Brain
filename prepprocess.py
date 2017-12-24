@@ -99,10 +99,11 @@ def get_min_max(data, mean_std):
 
 def data_normalize(series, min_, max_):
     rg = max_ - min_
-    series = float(series - min_) / rg
+    res = float(series - min_) / rg
+    return res
 
-def save_data(data, output_dir):
-    save_path = output_dir + '/pretty_data.xlsx'
+def save_data(data):
+    save_path = arg.output_dir + '/pretty_data.xlsx'
     data.to_excel(save_path)
 
 def main():
@@ -113,7 +114,7 @@ def main():
     mean_std = get_mean_std(data)
     min_max = get_min_max(data, mean_std)
     no_means_columns = get_no_means_columns(data)
-    no_means_rows = get_no_means_rows(data, mean_std)
+    #no_means_rows = get_no_means_rows(data, mean_std)
     obj_columns, obj_replace_rule = get_obj_columns(data)
 
     frame = pd.DataFrame()
@@ -123,17 +124,25 @@ def main():
         series = data[column]
         if column in obj_columns:
             replace_rule = obj_replace_rule(column)
-            min_, max_ = min_max(column)
+            #min_, max_ = min_max(column)
             series = pd.Series([replace_rule[d] for d in series], dtype = 'float64')
-        series = series.fillna(series.mean())
-        series = data_normalize(series)
+        # series = series.fillna(series.mean())
+        # series = data_normalize(series, min_, max_)
         frame[column] = series
+    
+    no_means_rows = get_no_means_rows(data, mean_std)
+
+    for column in frame.columns():
+    	min_, max_ = min_max(column)
+    	t = frame[column]
+    	t = t.fillna(t.mean())
+    	frame[column] = data_normalize(t, min_, max_)
 
     frame['Y'] = data_bak.iloc[:, -1:]
 
     frame = frame.drop(no_means_rows)
 
-    return frame
+    save_data(frame)
 
 
 
